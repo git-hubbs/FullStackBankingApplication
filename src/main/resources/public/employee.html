@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Info</title>
+    <link rel="stylesheet" href="employee.css">
+</head>
+
+<body>
+	
+	
+	<div class="log-form">
+  			<form action="approve" method="POST">
+  			
+  			
+  			<br>
+  			<br>
+  			<br>
+  					<table id="customer_account_table" style="text-align:center;">
+	  <tr>
+	    <th>Customer ID</th>
+	    <th>Account ID</th>
+	    <th>Balance</th>
+	    <th>Approved?</th>
+	  </tr>
+	</table>
+            	<div class="form-group">
+            		  		<h2>Approve Account:</h2>
+                	<input type="text" class="form-control" placeholder = "account id" name="account_id">
+                
+            		<button type="submit" class="btn btn-primary">Approve Account</button>
+            		
+            	</div> 
+        	</form>      
+	</div>
+	
+		<div class="log-form">
+  		<h2>Remove Account:</h2>
+  			<form action="deny" method="POST">
+            	<div class="form-group">
+                	<input type="text" class="form-control" placeholder = "account id" name="account_id">
+                
+            		<button type="submit" class="btn btn-primary">Deny Account</button>
+            		
+            	</div> 
+        	</form>      
+	</div>
+	
+	<div class="log-form">
+  			<form action="logout" method="GET">
+            	<div class="form-group">
+            		<button type="submit" class="btn btn-primary">Logout</button>
+            		
+            	</div> 
+        	</form>      
+	</div>
+	
+
+     <script type="text/javascript" src="employee.js"></script>
+</body>
+</html>

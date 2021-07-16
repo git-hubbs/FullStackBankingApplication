@@ -1,0 +1,49 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Registration</title>
+</head>
+
+<body>
+  <!-- your content here... -->
+  
+  <div class="log-form">
+  <h2>Register as a new customer</h2>
+  	<form action="customer-registration" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder = "username" name="username">
+                
+                <input type="text" class="form-control" placeholder = "password" name="password">
+                
+                <input type="text" class="form-control" placeholder = "first name" name="first_name">
+                
+                <input type="text" class="form-control" placeholder = "last name" name="last_name">
+                
+                <input type="text" class="form-control" placeholder = "email" name="email">
+                
+                <input type="text" class="form-control" placeholder = "phone number" name="phone_number">
+                
+            	<button type="submit" class="btn btn-primary">Register!</button>
+            </div>
+            
+            
+        </form>
+        <script url="view-customer.js"></script>
+</div><!--end log form -->
+  
+  	<div class="log-form">
+  			<form action="logout" method="GET">
+            	<div class="form-group">
+            		<button type="submit" class="btn btn-primary">Back</button>
+            		
+            	</div> 
+        	</form>      
+	</div>
+  
+
+</body>
+</html>

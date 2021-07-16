@@ -1,0 +1,90 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Info</title>
+</head>
+
+<body onload="addRow();">
+	<p id="customer_name">Customer</p>
+	<p>Accounts:</p>
+	
+	<table id="accounts_table" style="width:100%">
+	  <tr>
+	    <th>Account ID</th>
+	    <th>Balance</th>
+	  </tr>
+	</table>
+	
+<div class="log-form">
+  <h2>Deposit into account:</h2>
+  	<form action="deposit" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder = "id" name="account_id">
+                
+                <input type="text" class="form-control" placeholder = "deposit amount" name="amount">
+               
+                
+            <button type="submit" class="btn btn-primary">Deposit!</button>
+            </div> 
+        </form>      
+</div>
+
+<div class="log-form">
+  <h2>Withdraw from account:</h2>
+  	<form action="withdraw" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder = "id" name="account_id">
+                
+                <input type="text" class="form-control" placeholder = "withdraw amount" name="amount">
+               
+                
+            <button type="submit" class="btn btn-primary">Withdraw!</button>
+            </div> 
+        </form>      
+</div>
+
+<div class="log-form">
+  <h2>Transfer funds:</h2>
+  	<form action="transfer" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder = "transfer from this account" name="source_id">
+                
+                <input type="text" class="form-control" placeholder = "transfer to this account" name="target_id">
+                
+                <input type="text" class="form-control" placeholder = "transfer amount" name="amount">
+               
+                
+            <button type="submit" class="btn btn-primary">Withdraw!</button>
+            </div> 
+        </form>      
+</div>
+
+<div class="log-form">
+  <h2>Register a new account:</h2>
+  	<form action="account-registration" method="POST">
+            <div class="form-group">
+                
+                <input type="text" class="form-control" placeholder = "intial deposit" name="amount">
+                
+            <button type="submit" class="btn btn-primary">Register!</button>
+            </div> 
+        </form>      
+</div>
+
+	<div class="log-form">
+  			<form action="logout" method="GET">
+            	<div class="form-group">
+            		<button type="submit" class="btn btn-primary">Logout</button>
+            		
+            	</div> 
+        	</form>      
+	</div>
+            
+            
+     <script type="text/javascript" src="view-customer.js"></script>
+</body>
+</html>
