@@ -32,31 +32,33 @@ public class AccountServiceImpl implements AccountService {
 	}
 	
 	public void depositIntoAccount(Context ctx) {
-		if(Double.parseDouble(ctx.cookieStore("amount")) >= 0)
+		if(IsDoubleParsable(ctx.cookieStore("amount")) && IsIntParsable(ctx.cookieStore("account_id")))
 			aDao.DepositIntoAccount(Integer.parseInt(ctx.cookieStore("account_id")), Double.parseDouble(ctx.cookieStore("amount")));
 	}
 	
 	public void withdrawFromAccount(Context ctx) {
-		if(Double.parseDouble(ctx.cookieStore("amount")) < aDao.GetAccountByAccountID(Integer.parseInt(ctx.cookieStore("account_id"))).getBalance() && Double.parseDouble(ctx.cookieStore("amount")) > 0)
+		if(IsDoubleParsable(ctx.cookieStore("amount")) && IsIntParsable(ctx.cookieStore("account_id")) && Double.parseDouble(ctx.cookieStore("amount")) < aDao.GetAccountByAccountID(Integer.parseInt(ctx.cookieStore("account_id"))).getBalance() && Double.parseDouble(ctx.cookieStore("amount")) > 0)
 			aDao.WithdrawFromAccount(Integer.parseInt(ctx.cookieStore("account_id")), Double.parseDouble(ctx.cookieStore("amount")));
 	}
 	
 	public void transferBetweenAccounts(Context ctx) {
-		if(Double.parseDouble(ctx.cookieStore("amount")) < aDao.GetAccountByAccountID(Integer.parseInt(ctx.cookieStore("source_id"))).getBalance() && Double.parseDouble(ctx.cookieStore("amount")) > 0)
+		if(IsDoubleParsable(ctx.cookieStore("amount")) && IsIntParsable(ctx.cookieStore("source_id")) && IsIntParsable(ctx.cookieStore("target_id")) && Double.parseDouble(ctx.cookieStore("amount")) < aDao.GetAccountByAccountID(Integer.parseInt(ctx.cookieStore("source_id"))).getBalance() && Double.parseDouble(ctx.cookieStore("amount")) > 0)
 			aDao.TransferMoneyBetweenAccounts(Double.parseDouble(ctx.cookieStore("amount")), Integer.parseInt(ctx.cookieStore("target_id")), Integer.parseInt(ctx.cookieStore("source_id")));
 	}
 
 	@Override
 	public void registerAccount(Context ctx) {
-		User user = uDao.GetUserByUsernameAndPassword(ctx.cookieStore("username"), ctx.cookieStore("password"));
-		Customer customer = cDao.GetCustomerByUser(user);
-		aDao.InsertAccount(new Account(0, customer.getCustomerId(), Double.parseDouble(ctx.cookieStore("amount")), false));
+		if(IsDoubleParsable(ctx.cookieStore("amount"))) {
+			User user = uDao.GetUserByUsernameAndPassword(ctx.cookieStore("username"), ctx.cookieStore("password"));
+			Customer customer = cDao.GetCustomerByUser(user);
+			aDao.InsertAccount(new Account(0, customer.getCustomerId(), Double.parseDouble(ctx.cookieStore("amount")), false));
+		}
 	}
 
 	@Override
 	public boolean registerCustomer(Context ctx) {
 		if(verifyUsernameInput(ctx.cookieStore("username")) && verifyPasswordInput(ctx.cookieStore("password")) 
-				&& verifyEmailInput(ctx.cookieStore("email")) && verifyPhoneNumberInput(ctx.cookieStore("phoneNumber"))) {
+				&& verifyEmailInput(ctx.cookieStore("email")) && verifyPhoneNumberInput(ctx.cookieStore("phone_number"))) {
 			
 			if(uDao.InsertUser(new User(ctx.cookieStore("username"), ctx.cookieStore("password")))
 					&& cDao.InsertCustomer(new Customer(uDao.GetUserByUsernameAndPassword(ctx.cookieStore("username"),
@@ -105,6 +107,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public boolean verifyPhoneNumberInput(String number) {
+		System.out.println(number);
 		if(number.length() == 10) {
 			try {
 			    Long.parseLong(number);
@@ -125,8 +128,43 @@ public class AccountServiceImpl implements AccountService {
 	}
 	
 
+
+	public boolean IsDoubleParsable(String stringDouble) {
+		if(!(stringDouble.length() == 0 || stringDouble == null)) {
+			try
+			{
+			  Double.parseDouble(stringDouble);
+			}
+			catch(NumberFormatException e)
+			{
+			  return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
+	}
+	
+	//returns whether a string can be parsed into an integer
+	public boolean IsIntParsable(String stringInt) {
+		if(!(stringInt.length() == 0 || stringInt == null)) {
+			try
+			{
+			  Integer.parseInt(stringInt);
+			}
+			catch(NumberFormatException e)
+			{
+			  return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean denyAccount(Context ctx) {
+
 		if(aDao.DenyAccount(Integer.parseInt(ctx.cookieStore("account_id"))))
 			return true;
 		return false;

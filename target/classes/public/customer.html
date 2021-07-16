@@ -6,23 +6,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Customer Info</title>
+    <link rel="stylesheet" href="customer.css">
 </head>
 
 <body onload="addRow();">
-	<p id="customer_name">Customer</p>
-	<p>Accounts:</p>
+  			<br>
+  			<br>
+  			<br>
+
 	
-	<table id="accounts_table" style="width:100%">
+<div class="log-form">
+
+
+  	<form action="deposit" method="POST">
+  		<table id="accounts_table" style="width:100%">
 	  <tr>
 	    <th>Account ID</th>
 	    <th>Balance</th>
 	  </tr>
 	</table>
-	
-<div class="log-form">
-  <h2>Deposit into account:</h2>
-  	<form action="deposit" method="POST">
             <div class="form-group">
+              <h2>Deposit into account:</h2>
                 <input type="text" class="form-control" placeholder = "id" name="account_id">
                 
                 <input type="text" class="form-control" placeholder = "deposit amount" name="amount">

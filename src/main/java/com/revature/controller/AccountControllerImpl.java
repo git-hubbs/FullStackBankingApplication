@@ -105,6 +105,8 @@ public class AccountControllerImpl implements AccountController{
 		String email = ctx.formParam("email");
 		String phone_number = ctx.formParam("phone_number");
 		
+		System.out.println("username");
+		
 		ctx.status(200);
 		
 		ctx.cookieStore("username",username);
@@ -115,6 +117,7 @@ public class AccountControllerImpl implements AccountController{
 		ctx.cookieStore("phone_number",phone_number);
 		
 		ctx.redirect("login.html");
+		accountService.registerCustomer(ctx);
 		
 		log.info("New customer registration initiated with username: " + username + " and password: " + password);
 	}
