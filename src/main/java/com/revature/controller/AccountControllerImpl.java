@@ -1,8 +1,23 @@
 package com.revature.controller;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.revature.models.Deposit;
+import com.revature.models.Transfer;
+import com.revature.models.User;
+import com.revature.models.Withdraw;
 import com.revature.service.AccountService;
 import com.revature.service.AccountServiceImpl;
 
@@ -24,60 +39,61 @@ public class AccountControllerImpl implements AccountController{
 	
 	@Override
 	public void deposit(Context ctx) {
-		
-		String accountID = ctx.formParam("account_id");
-		String depositAmount = ctx.formParam("amount");
-		
-		System.out.println(accountID);
-		
-		ctx.status(200);
-		
-		ctx.cookieStore("account_id",accountID);
-		ctx.cookieStore("amount",depositAmount);
-		
-		accountService.depositIntoAccount(ctx);
-		
-		ctx.redirect("customer.html");
-		
-		log.info("Deposit initiated into account: " + accountID);
+		ObjectMapper om = new ObjectMapper();
+		try {
+			Deposit deposit = om.readValue(ctx.body(), Deposit.class);
+			if(deposit.getAccount_id() != 0 && deposit.getAmount() != 0.0) {
+				ctx.cookieStore("deposit", deposit);
+				if(accountService.depositIntoAccount(ctx)) {
+					System.out.println(deposit.getAmount());
+						ctx.status(200);
+						return;
+				}
+			}
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		ctx.status(300);
 	}
 
 	@Override
 	public void withdraw(Context ctx) {
-		String accountID = ctx.formParam("account_id");
-		String withdrawAmount = ctx.formParam("amount");
-		
-		System.out.println(accountID);
-		
-		ctx.status(200);
-		
-		ctx.cookieStore("account_id",accountID);
-		ctx.cookieStore("amount",withdrawAmount);
-		
-		accountService.withdrawFromAccount(ctx);
-		
-		ctx.redirect("customer.html");
-		
-		log.info("Withdraw initiated from account: " + accountID);
+		System.out.println("withdraw started");
+		ObjectMapper om = new ObjectMapper();
+		try {
+			Withdraw withdraw = om.readValue(ctx.body(), Withdraw.class);
+			if(withdraw.getAccount_id() != 0 && withdraw.getAmount() != 0.0) {
+				ctx.cookieStore("withdraw", withdraw);
+				if(accountService.withdrawFromAccount(ctx)) {
+					System.out.println(withdraw.getAmount());
+						ctx.status(200);
+						return;
+				}
+			}
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		ctx.status(300);
 	}
 
 	@Override
 	public void transfer(Context ctx) {
-		String sourceID = ctx.formParam("source_id");
-		String targetID = ctx.formParam("target_id");
-		String transferAmount = ctx.formParam("amount");
-		
-		ctx.status(200);
-		
-		ctx.cookieStore("source_id",sourceID);
-		ctx.cookieStore("target_id",targetID);
-		ctx.cookieStore("amount",transferAmount);
-		
-		accountService.transferBetweenAccounts(ctx);
-		
-		ctx.redirect("customer.html");
-		
-		log.info("Transfer initiated between source: " + sourceID + " and target: " + targetID);
+		System.out.println("withdraw started");
+		ObjectMapper om = new ObjectMapper();
+		try {
+			Transfer transfer = om.readValue(ctx.body(), Transfer.class);
+			if(transfer.getSourceAccountID() != 0 && transfer.getTargetAccountID() != 0 && transfer.getAmount() != 0.0) {
+				ctx.cookieStore("transfer", transfer);
+				if(accountService.transferBetweenAccounts(ctx)) {
+					System.out.println(transfer.getAmount());
+						ctx.status(200);
+						return;
+				}
+			}
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		ctx.status(300);
 	}
 
 	@Override
@@ -131,7 +147,9 @@ public class AccountControllerImpl implements AccountController{
 	@Override
 	public void getAllAccounts(Context ctx) {
 		ctx.status(200);
+
 		ctx.json(accountService.getAllAccounts());
+		
 		log.info("Fetching user accounts...");
 	}
 

@@ -9,10 +9,10 @@ import io.javalin.http.Context;
 
 public interface AccountService {
 	
-	public void depositIntoAccount(Context ctx);
+	public boolean depositIntoAccount(Context ctx);
 	public List<Account> getAccounts(Context ctx);
-	public void withdrawFromAccount(Context ctx);
-	public void transferBetweenAccounts(Context ctx);
+	public boolean withdrawFromAccount(Context ctx);
+	public boolean transferBetweenAccounts(Context ctx);
 	public void registerAccount(Context ctx);
 	public boolean registerCustomer(Context ctx);
 	public List<Account> getAllAccounts();

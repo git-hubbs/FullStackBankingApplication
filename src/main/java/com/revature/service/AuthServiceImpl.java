@@ -18,14 +18,10 @@ private static byte[] salt = new SecureRandom().getSeed(16);
 
 	@Override
 	public boolean authenticateUser(String username, String password) {
-		
 		if(uDao.GetUserByUsernameAndPassword(username, password) != null) {
 			return true;
 		}
-
-		//return true;
 		return false;
-	
 	}
 
 

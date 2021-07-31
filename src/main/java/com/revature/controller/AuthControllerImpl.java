@@ -29,8 +29,6 @@ public class AuthControllerImpl implements AuthController{
 			ctx.cookieStore("password",password);
 
 			ctx.redirect("customer.html");
-			//if user doesn't exists you'd set it to 407 
-			
 			
 		}else {
 			

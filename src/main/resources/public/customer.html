@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="customer.css">
 </head>
 
-<body onload="addRow();">
+<body>
   			<br>
   			<br>
   			<br>
@@ -18,7 +18,7 @@
 <div class="log-form">
 
 
-  	<form action="deposit" method="POST">
+
   		<table id="accounts_table" style="width:100%">
 	  <tr>
 	    <th>Account ID</th>
@@ -27,44 +27,38 @@
 	</table>
             <div class="form-group">
               <h2>Deposit into account:</h2>
-                <input type="text" class="form-control" placeholder = "id" name="account_id">
+                <input type="text" id="deposit_id_field" class="form-control" placeholder = "id" name="account_id">
                 
-                <input type="text" class="form-control" placeholder = "deposit amount" name="amount">
+                <input type="text" id="deposit_amount_field" class="form-control" placeholder = "deposit amount" name="amount">
                
                 
-            <button type="submit" class="btn btn-primary">Deposit!</button>
+            <button id="deposit_button" type="submit" class="btn btn-primary">Deposit!</button>
             </div> 
-        </form>      
 </div>
 
 <div class="log-form">
   <h2>Withdraw from account:</h2>
-  	<form action="withdraw" method="POST">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder = "id" name="account_id">
+                <input type="text" id="withdraw_id_field"class="form-control" placeholder = "id" name="account_id">
                 
-                <input type="text" class="form-control" placeholder = "withdraw amount" name="amount">
+                <input type="text" id="withdraw_amount_field" class="form-control" placeholder = "withdraw amount" name="amount">
                
                 
-            <button type="submit" class="btn btn-primary">Withdraw!</button>
-            </div> 
-        </form>      
+            <button id="withdraw_button" type="submit" class="btn btn-primary">Withdraw!</button>
+            </div>    
 </div>
 
 <div class="log-form">
   <h2>Transfer funds:</h2>
-  	<form action="transfer" method="POST">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder = "transfer from this account" name="source_id">
+                <input type="text" id="source_id_field" class="form-control" placeholder = "transfer from this account" name="source_id">
                 
-                <input type="text" class="form-control" placeholder = "transfer to this account" name="target_id">
+                <input type="text" id="target_id_field" class="form-control" placeholder = "transfer to this account" name="target_id">
                 
-                <input type="text" class="form-control" placeholder = "transfer amount" name="amount">
-               
+                <input type="text" id="transfer_amount_field" class="form-control" placeholder = "transfer amount" name="amount">
                 
-            <button type="submit" class="btn btn-primary">Withdraw!</button>
-            </div> 
-        </form>      
+            <button id="transfer_button" type="submit" class="btn btn-primary">Withdraw!</button>
+            </div>     
 </div>
 
 <div class="log-form">

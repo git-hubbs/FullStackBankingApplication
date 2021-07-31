@@ -30,9 +30,10 @@ public class MainDriver {
 		app.post("/login", ctx -> authController.login(ctx));
 		app.get("/logout", ctx -> authController.logout(ctx));
 		app.get("/customer", ctx -> accountController.getCustomer(ctx));
-		app.post("/deposit", ctx -> accountController.deposit(ctx));
-		app.post("/withdraw", ctx -> accountController.withdraw(ctx));
-		app.post("/transfer", ctx -> accountController.transfer(ctx));
+		//app.post("/customer", ctx -> accountController.getCustomer(ctx));
+		app.put("/deposit", ctx -> accountController.deposit(ctx));
+		app.put("/withdraw", ctx -> accountController.withdraw(ctx));
+		app.put("/transfer", ctx -> accountController.transfer(ctx));
 		app.post("/account-registration", ctx -> accountController.registerNewAccount(ctx));
 		app.post("/customer-registration", ctx -> accountController.registerNewCustomer(ctx));
 		app.post("/customer-registration-button", ctx -> accountController.loadRegistrationPage(ctx));

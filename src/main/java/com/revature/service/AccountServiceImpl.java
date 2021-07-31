@@ -13,7 +13,10 @@ import com.revature.dao.UserDAO;
 import com.revature.dao.UserDAOImpl;
 import com.revature.models.Account;
 import com.revature.models.Customer;
+import com.revature.models.Deposit;
+import com.revature.models.Transfer;
 import com.revature.models.User;
+import com.revature.models.Withdraw;
 
 import io.javalin.http.Context;
 
@@ -31,19 +34,61 @@ public class AccountServiceImpl implements AccountService {
 		return accounts;
 	}
 	
-	public void depositIntoAccount(Context ctx) {
-		if(IsDoubleParsable(ctx.cookieStore("amount")) && IsIntParsable(ctx.cookieStore("account_id")))
-			aDao.DepositIntoAccount(Integer.parseInt(ctx.cookieStore("account_id")), Double.parseDouble(ctx.cookieStore("amount")));
+	public boolean depositIntoAccount(Context ctx) {
+		Deposit deposit = ctx.cookieStore("deposit");
+		User user = uDao.GetUserByUsernameAndPassword(ctx.cookieStore("username"), ctx.cookieStore("password"));
+		Customer customer = cDao.GetCustomerByUser(user);
+		try {
+			if(deposit.getAmount() > 0 && aDao.GetAccountByAccountID(deposit.getAccount_id()).getCustomer_id() == customer.getCustomerId() && aDao.GetAccountByAccountID(deposit.getAccount_id()).isApproved()) {
+				if(aDao.DepositIntoAccount(deposit.getAccount_id(), deposit.getAmount())) {
+					return true;
+				}else {	
+					return false;
+				}
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	
+	public boolean withdrawFromAccount(Context ctx) {
+		Withdraw withdraw = ctx.cookieStore("withdraw");
+		User user = uDao.GetUserByUsernameAndPassword(ctx.cookieStore("username"), ctx.cookieStore("password"));
+		Customer customer = cDao.GetCustomerByUser(user);
+		try {
+			if(withdraw.getAmount() > 0 && aDao.GetAccountByAccountID(withdraw.getAccount_id()).getCustomer_id() == customer.getCustomerId() && aDao.GetAccountByAccountID(withdraw.getAccount_id()).isApproved()
+					&& aDao.GetAccountByAccountID(withdraw.getAccount_id()).getBalance() >= withdraw.getAmount()) {
+				if(aDao.WithdrawFromAccount(withdraw.getAccount_id(), withdraw.getAmount())) {
+					return true;
+				}else {	
+					return false;
+				}
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
-	public void withdrawFromAccount(Context ctx) {
-		if(IsDoubleParsable(ctx.cookieStore("amount")) && IsIntParsable(ctx.cookieStore("account_id")) && Double.parseDouble(ctx.cookieStore("amount")) < aDao.GetAccountByAccountID(Integer.parseInt(ctx.cookieStore("account_id"))).getBalance() && Double.parseDouble(ctx.cookieStore("amount")) > 0)
-			aDao.WithdrawFromAccount(Integer.parseInt(ctx.cookieStore("account_id")), Double.parseDouble(ctx.cookieStore("amount")));
-	}
-	
-	public void transferBetweenAccounts(Context ctx) {
-		if(IsDoubleParsable(ctx.cookieStore("amount")) && IsIntParsable(ctx.cookieStore("source_id")) && IsIntParsable(ctx.cookieStore("target_id")) && Double.parseDouble(ctx.cookieStore("amount")) < aDao.GetAccountByAccountID(Integer.parseInt(ctx.cookieStore("source_id"))).getBalance() && Double.parseDouble(ctx.cookieStore("amount")) > 0)
-			aDao.TransferMoneyBetweenAccounts(Double.parseDouble(ctx.cookieStore("amount")), Integer.parseInt(ctx.cookieStore("target_id")), Integer.parseInt(ctx.cookieStore("source_id")));
+	public boolean transferBetweenAccounts(Context ctx) {
+		Transfer transfer = ctx.cookieStore("transfer");
+		User user = uDao.GetUserByUsernameAndPassword(ctx.cookieStore("username"), ctx.cookieStore("password"));
+		Customer customer = cDao.GetCustomerByUser(user);
+		try {
+			if(transfer.getAmount() > 0 && aDao.GetAccountByAccountID(transfer.getSourceAccountID()).getCustomer_id() == customer.getCustomerId() && aDao.GetAccountByAccountID(transfer.getTargetAccountID()).isApproved()
+					&& aDao.GetAccountByAccountID(transfer.getSourceAccountID()).isApproved() && aDao.GetAccountByAccountID(transfer.getSourceAccountID()).getBalance() >= transfer.getAmount()) {
+				if(aDao.TransferMoneyBetweenAccounts(transfer.getAmount(), transfer.getTargetAccountID(), transfer.getSourceAccountID())) {
+					return true;
+				}else {	
+					return false;
+				}
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import com.revature.models.Customer;
 import com.revature.util.ConnectionFactory;
 
 public class AccountDAOImpl implements AccountDAO {
+	
+	DecimalFormat df = new DecimalFormat("##.##");
 
 	public boolean DepositIntoAccount(int accountID, double depositAmount) {
 		Connection conn = ConnectionFactory.getConnection();
@@ -148,7 +151,7 @@ public class AccountDAOImpl implements AccountDAO {
 	public boolean InsertAccount(Account account) {
 		Connection conn = ConnectionFactory.getConnection();;
 		try {
-			String sql = "insert into accounts (customer_id, balance, approval) values ('" + account.getCustomer_id() + "', '" + account.getBalance() + "', '" + account.isApproved() + "')";
+			String sql = "insert into accounts (customer_id, balance, approval) values ('" + account.getCustomer_id() + "', '" + String.format("%.2f",account.getBalance()) + "', '" + account.isApproved() + "')";
 			Statement s = conn.createStatement();
 			s.execute(sql);
 			conn.close();
