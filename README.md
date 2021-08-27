@@ -24,7 +24,7 @@ Revature Bank provides common banking features over a functional web based user 
 - Administrators can approve, reject, or delete bank accounts
 
 ## Getting Started
-- Clone branch using the command: git clone --single-branch --branch JasonHubbs https://github.com/git-hubbs/FullStackBankingApplication.git
+- Clone branch using the command: git clone --single-branch --branch main https://github.com/git-hubbs/FullStackBankingApplication.git
 - Create a PostgreSQL database using the script
 - If applicable, change the port number and database name fields in ConnectionFactoryImpl.java
 
